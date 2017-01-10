@@ -1,6 +1,8 @@
 package us.codecraft.webmagic.downloader;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.annotation.ThreadSafe;
+import org.apache.log4j.helpers.Loader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import us.codecraft.webmagic.Page;
@@ -27,8 +29,14 @@ public class PhantomJSDownloader extends AbstractDownloader {
     private int threadNum;
 
     public PhantomJSDownloader() {
-        this.initPhantomjsCrawlPath();
+        this.initPhantomjsCrawlPath(null);
     }
+    
+    public PhantomJSDownloader(String crawljs,String phantomJsCommand) {
+        this.initPhantomjsCrawlPath(crawljs);
+        PhantomJSDownloader.phantomJsCommand = phantomJsCommand;
+    }
+    
     /**
        * 添加新的构造函数，支持phantomjs自定义命令
        * 
@@ -40,13 +48,22 @@ public class PhantomJSDownloader extends AbstractDownloader {
        * @param phantomJsCommand phantomJsCommand
        */
     public PhantomJSDownloader(String phantomJsCommand) {
-        this.initPhantomjsCrawlPath();
+        this.initPhantomjsCrawlPath(null);
         PhantomJSDownloader.phantomJsCommand = phantomJsCommand;
     }
     
-    private void initPhantomjsCrawlPath() {
-        PhantomJSDownloader.crawlJsPath = new File(this.getClass().getResource("/").getPath()).getPath() + System.getProperty("file.separator") + "crawl.js ";
-    }
+	private void initPhantomjsCrawlPath(String crawljs) {
+		if (StringUtils.isBlank(crawljs)) {
+			String p = Class.class.getClass().getResource("/").getPath();
+			// p = this.getClass().getResource("/").getPath();
+			File file = new File(p);
+			String path = file.getPath() + System.getProperty("file.separator") + "crawl.js ";
+			System.out.println("file path=" + path);
+			PhantomJSDownloader.crawlJsPath = path;
+		} else {
+			PhantomJSDownloader.crawlJsPath = crawljs;
+		}
+	}
 
     @Override
     public Page download(Request request, Task task) {

@@ -306,16 +306,20 @@
                     </plugin>
                 </plugins>
             </build>
-            <distributionManagement>
-                <snapshotRepository>
-                    <id>sonatype-nexus-snapshots</id>
-                    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-                </snapshotRepository>
-                <repository>
-                    <id>sonatype-nexus-staging</id>
-                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-                </repository>
-            </distributionManagement>
         </profile>
     </profiles>
+    
+    <distributionManagement>
+	    <repository>
+	        <id>mljr-releases</id>
+	        <name>Nexus Release Repository</name>
+	        <url>http://maven.youjie.com/content/repositories/releases</url>
+	    </repository>
+	    <snapshotRepository>
+	        <id>mljr-snapshots</id>
+	        <name>Nexus Snapshot Repository</name>
+	        <url>http://maven.youjie.com/content/repositories/snapshots</url>
+	    </snapshotRepository>
+    </distributionManagement>
+    
 </project>
